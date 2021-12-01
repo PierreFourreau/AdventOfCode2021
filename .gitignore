@@ -1,0 +1,7 @@
+.gradle
+.idea
+build
+perfs
+out/
+*.iml
+.pub
