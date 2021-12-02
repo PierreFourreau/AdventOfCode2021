@@ -10,7 +10,7 @@ fun main() {
     partTwo(intLines)
 }
 
-fun partOne(lines: List<Int>) {
+private fun partOne(lines: List<Int>) {
     var increasedLinesCount = 0
 
     lines.forEachIndexed { index, line ->
@@ -22,7 +22,7 @@ fun partOne(lines: List<Int>) {
     println(increasedLinesCount)
 }
 
-fun partTwo(lines: List<Int>) {
+private fun partTwo(lines: List<Int>) {
     var increasedLinesCount = 0
 
     val windowsOfThreeLines = lines.windowed(size = 3, step = 1)
