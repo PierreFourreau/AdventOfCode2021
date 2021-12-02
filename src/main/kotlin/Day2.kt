@@ -8,13 +8,13 @@ private const val UP = "up"
 private const val BLANK = " "
 
 fun main() {
-    val resultPartOne = parseMovements(
+    val resultPartOne = parseSubmarineMovements(
         fileName = "src/main/input/day2_part1.txt",
         submarine = SubmarineFactory.create(withAim = false)
     )
     println("Result part 1 $resultPartOne")
 
-    val resultPartTwo = parseMovements(
+    val resultPartTwo = parseSubmarineMovements(
         fileName = "src/main/input/day2_part2.txt",
         submarine = SubmarineFactory.create(withAim = true)
     )
@@ -78,7 +78,7 @@ class SubmarineV2(var aim: Int = 0) : Submarine(), Movement {
     }
 }
 
-private fun parseMovements(
+private fun parseSubmarineMovements(
     fileName: String,
     submarine: Submarine
 ): Int {
