@@ -62,7 +62,7 @@ class SubmarineV1 : Submarine(), Movement {
     }
 }
 
-class SubmarineV2(var aim: Int = 0) : Submarine(), Movement {
+class SubmarineV2(private var aim: Int = 0) : Submarine(), Movement {
 
     override fun up(value: Int) {
         aim -= value
