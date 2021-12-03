@@ -37,7 +37,7 @@ private fun partTwo(lines: List<String>) {
     println("Result part 2 " + oxygen * co2)
 }
 
-private enum class Rating {
+enum class Rating {
     OXYGEN, CO2
 }
 
