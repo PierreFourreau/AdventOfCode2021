@@ -36,8 +36,6 @@ private fun computeRating(lines: List<List<Int>>, index: Int, rating: Rating): I
         Rating.OXYGEN -> maxOf(partition.second, partition.first, compareBy { it.size })
         Rating.CO2 -> minOf(partition.first, partition.second, compareBy { it.size })
     }
-    println("Result filter $partition")
-
     return computeRating(
         lines = newLines,
         index = index + 1,
