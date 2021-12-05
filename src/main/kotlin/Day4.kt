@@ -11,78 +11,39 @@ fun main() {
 }
 
 data class Bingo(
-    val inputNumbers: MutableList<Int>,
-    val grids: List<List<List<BingoNumber>>>
+    val inputNumbers: List<Int>, val grids: List<List<List<BingoNumber>>>
 )
 
 data class BingoNumber(
-    val number: Int,
-    var marked: Boolean = false
+    val number: Int, var marked: Boolean = false
 )
 
 private fun partOne(lines: List<String>) {
-
     val bingo = parseBingo(lines)
-    bingo.grids.map { grid ->
-        grid.map { line ->
-            println("Debug $line")
-        }
-        println("Debug _____")
-    }
-
 
     bingo.inputNumbers.forEach { inputNumber ->
+        bingo.grids.flatten().flatten().filter { it.number == inputNumber }.map {
+            it.marked = true
+        }
+
         bingo.grids.forEach { grid ->
-            grid.forEach { line ->
-                line.forEach {
-                    if (it.number == inputNumber) {
-                        it.marked = true
-                    }
-                }
+            if (checkIfThereIsAWin(grid) || checkIfThereIsAWin(grid.inverseMatrix5x5())) {
+                val sumOfAllUnmarkedNumbers = grid.flatten().filter { !it.marked }.sumOf { it.number }
+                println("Result part 1 " + sumOfAllUnmarkedNumbers * inputNumber)
+                return
             }
         }
-//        bingo.grids.flatten().flatten().filter { it.number == inputNumber }.map {
-//            println("Result marked" + it + " inputNumber $inputNumber")
-//            it.marked = true
-//        }
-
-        // need to find 26
-
-        bingo.grids.flatten().forEach {
-            if (it.count { it.marked } == 5) {
-                println("Result aaaainputNumber $inputNumber")
-            }
-        }
-        bingo.grids.forEach { grid ->
-            grid.forEach { line ->
-                if (line.count { it.marked } == 5) {
-                    val sumOfAllUnmarkedNumbers = grid
-                        .flatten()
-                        .filter { !it.marked }
-                        .sumOf { it.number }
-                    println("Result part 1 sumOfAllUnmarkedNumbers $sumOfAllUnmarkedNumbers")
-                    println("Result part 1 inputNumber $inputNumber")
-                    println("Result part 1 " + sumOfAllUnmarkedNumbers * inputNumber)
-                    return
-                }
-            }
-        }
-
     }
     println("No winner")
 }
 
 private fun parseBingo(lines: List<String>): Bingo {
-    val parsedNumbers = mutableListOf<Int>()
+    val parsedNumbers = lines.first().split(COMMA).map(String::toInt)
     val parsedGrids = mutableListOf<List<BingoNumber>>()
 
-    lines.forEachIndexed { index, line ->
+    lines.drop(2).forEach { line ->
         if (line.isEmpty()) {
-            return@forEachIndexed
-        }
-        if (index == 0) {
-            parsedNumbers.addAll(line.split(COMMA).map(String::toInt))
-            return@forEachIndexed
+            return@forEach
         }
         parsedGrids.add(line.trim().split(BLANK_REGEX).map {
             BingoNumber(number = it.toInt())
@@ -92,4 +53,25 @@ private fun parseBingo(lines: List<String>): Bingo {
         inputNumbers = parsedNumbers,
         grids = parsedGrids.windowed(size = 5, step = 5)
     )
+}
+
+private fun checkIfThereIsAWin(grid: List<List<BingoNumber>>): Boolean {
+    grid.forEach { line ->
+        if (line.count { it.marked } == 5) {
+            return true
+        }
+    }
+    return false
+}
+
+fun List<List<BingoNumber>>.inverseMatrix5x5(): List<List<BingoNumber>> {
+    val newList = mutableListOf<List<BingoNumber>>()
+    for (i in 0..4) {
+        val newLine = mutableListOf<BingoNumber>()
+        for (j in 0..4) {
+            newLine.add(this[j][i])
+        }
+        newList.add(newLine)
+    }
+    return newList
 }
