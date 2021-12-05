@@ -17,11 +17,11 @@ fun main() {
 
     val straightLines = vents.filter { (it.from.x == it.to.x) || (it.from.y == it.to.y) }
     straightLines.forEach { matrix.drawLine(it) }
-    println("Result part 1 : " + matrix.flatten().count { it >= 2 })
+    println("Result part 1 : " + matrix.getOverlapPoints())
 
     val diagonalLines = vents.filterNot { (it.from.x == it.to.x) || (it.from.y == it.to.y) }
     diagonalLines.forEach { matrix.drawLine(it) }
-    println("Result part 2 : " + matrix.flatten().count { it >= 2 })
+    println("Result part 2 : " + matrix.getOverlapPoints())
 
     println("------------------------------Debugging------------------------------")
     println("Input : $vents")
@@ -60,6 +60,8 @@ data class Vent(val from: Point, val to: Point)
 data class Point(val x: Int, val y: Int)
 
 // Private extensions
+
+private fun Array<Array<Int>>.getOverlapPoints() = flatten().count { it >= 2 }
 
 private fun Array<Array<Int>>.drawLine(vent: Vent) {
     // Check direction
