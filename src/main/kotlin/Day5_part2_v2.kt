@@ -6,8 +6,8 @@ private const val COMMA = ","
 private const val ARROW = "->"
 
 fun main() {
-    val lines = File("src/main/input/day5_test.txt").readLines()
-    val vents = parseCoordinates(lines)
+    val lines = File("src/main/input/day5.txt").readLines()
+    val vents = parseCoordinates(lines).toMutableList()
     val matrixSize = maxOf(
         maxOf(vents.maxOf { it.from.x }, vents.maxOf { it.from.y }),
         maxOf(vents.maxOf { it.to.x }, vents.maxOf { it.to.y })
