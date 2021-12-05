@@ -75,15 +75,12 @@ private fun parseCoordinates(lines: List<String>): List<Vent> {
         vents.add(
             Vent(
                 from = coordinates[0].trim().split(COMMA).let {
-                    Coordinate(x = it[0].toInt(), y = it[1].toInt())
+                    Point(x = it[0].toInt(), y = it[1].toInt())
                 },
                 to = coordinates[1].trim().split(COMMA).let {
-                    Coordinate(x = it[0].toInt(), y = it[1].toInt())
+                    Point(x = it[0].toInt(), y = it[1].toInt())
                 })
         )
     }
     return vents
 }
-
-data class Vent(val from: Coordinate, val to: Coordinate)
-data class Coordinate(val x: Int, val y: Int)
