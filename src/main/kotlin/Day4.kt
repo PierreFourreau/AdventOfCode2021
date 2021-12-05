@@ -64,14 +64,7 @@ private fun parseBingo(lines: List<String>): Bingo {
     return Bingo(inputNumbers = parsedNumbers, grids = parsedGrids.windowed(size = 5, step = 5).map { Grid(it) })
 }
 
-private fun checkIfExistsMarkedLine(grid: Grid): Boolean {
-    grid.lines.forEach { line ->
-        if (line.count { it.marked } == 5) {
-            return true
-        }
-    }
-    return false
-}
+private fun checkIfExistsMarkedLine(grid: Grid): Boolean = grid.lines.any { line -> line.all { it.marked } }
 
 // Models
 
