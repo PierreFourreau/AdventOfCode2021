@@ -6,47 +6,50 @@ private const val COMMA = ","
 
 fun main() {
     val lines = File("src/main/input/day6.txt").readLines()
-    val fishes = parseFishes(lines)
+    partOne(fishes = parseFishes(lines))
+    partTwo(fishes = parseFishes(lines))
+}
 
-    println("Initial state ${fishes.print()}")
-
-    // 80 days
-    for (i in 1 until 81) {
+private fun partOne(fishes: Fishes) {
+    repeat(80) {
         fishes.stepDay()
-        println("After $i days: ${fishes.print()}")
     }
     println("Result part 1: ${fishes.getCount()}")
 }
 
-private fun parseFishes(lines: List<String>) = Fishes(
-    fishes = lines.first().split(COMMA).map {
-        Fish(timer = it.toInt())
-    }.toMutableList()
-)
-
-private data class Fish(var timer: Int) {
-    fun stepDay() {
-        timer -= 1
+private fun partTwo(fishes: Fishes) {
+    repeat(256) {
+        fishes.stepDay()
     }
-
-    fun reborn() {
-        timer = 6
-    }
+    println("Result part 2: ${fishes.getCount()}")
 }
 
-private data class Fishes(val fishes: MutableList<Fish>) {
-    fun print() = fishes.map { it.timer }
-    fun getCount() = fishes.count()
-    fun create() = Fish(timer = 8)
-    fun stepDay() {
-        val createdFishes = mutableListOf<Fish>()
-        fishes.forEach { fish ->
-            fish.stepDay()
-            if (fish.timer < 0) {
-                fish.reborn()
-                createdFishes.add(create())
-            }
+private fun parseFishes(lines: List<String>): Fishes {
+    val fishesMap = mutableMapOf<Int, Long>()
+    lines.first().split(COMMA).forEach { fish ->
+        if (fishesMap.containsKey(fish.toInt())) {
+            fishesMap[fish.toInt()] = fishesMap[fish.toInt()]?.plus(1L) ?: 0
+        } else {
+            fishesMap[fish.toInt()] = 1L
         }
-        fishes.addAll(createdFishes)
+
+    }
+    return Fishes(fishes = fishesMap)
+}
+
+private data class Fishes(val fishes: MutableMap<Int, Long>) {
+    fun getCount() = fishes.values.sum()
+    fun stepDay() {
+        val newFishes = mutableMapOf<Int, Long>()
+        fishes.forEach { (age, quantity) ->
+            if (age == 0) {
+                newFishes[6] = newFishes[6]?.plus(quantity) ?: quantity  // Reborn
+                newFishes[8] = newFishes[8]?.plus(quantity) ?: quantity // New life
+                return@forEach
+            }
+            newFishes[age - 1] = newFishes[age - 1]?.plus(quantity) ?: quantity
+        }
+        fishes.clear()
+        fishes.putAll(newFishes)
     }
 }
