@@ -18,9 +18,7 @@ private fun partOne(fishes: Fishes) {
 }
 
 private fun partTwo(fishes: Fishes) {
-    repeat(256) {
-        fishes.stepDay()
-    }
+    repeat(256) { fishes.stepDay() }
     println("Result part 2: ${fishes.getCount()}")
 }
 
