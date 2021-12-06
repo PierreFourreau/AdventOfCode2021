@@ -18,19 +18,17 @@ private fun partOne(fishes: Fishes) {
 }
 
 private fun partTwo(fishes: Fishes) {
-    repeat(256) { fishes.stepDay() }
+    repeat(256) {
+        fishes.stepDay()
+    }
     println("Result part 2: ${fishes.getCount()}")
 }
 
 private fun parseFishes(lines: List<String>): Fishes {
     val fishesMap = mutableMapOf<Int, Long>()
     lines.first().split(COMMA).forEach { fish ->
-        if (fishesMap.containsKey(fish.toInt())) {
-            fishesMap[fish.toInt()] = fishesMap[fish.toInt()]?.plus(1L) ?: 0
-        } else {
-            fishesMap[fish.toInt()] = 1L
-        }
-
+        val intFish = fish.toInt()
+        fishesMap[intFish] = fishesMap[intFish]?.plus(1L) ?: 1L
     }
     return Fishes(fishes = fishesMap)
 }
