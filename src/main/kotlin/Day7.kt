@@ -7,10 +7,10 @@ private const val COMMA = ","
 
 fun main() {
     val lines = File("src/main/input/day7.txt").readLines()
-    partOne(crabs = parseCrabs(lines))
+    computeBestPosition(crabs = parseCrabs(lines))
 }
 
-private fun partOne(crabs: Crabs) {
+private fun computeBestPosition(crabs: Crabs) {
     var position = 0
     val maxPosition = crabs.getMaxPosition()
     val fuelConsumedMap = mutableListOf<Pair<Int, Int>>()   // Pair: Position -> Fuel consumed
@@ -22,7 +22,7 @@ private fun partOne(crabs: Crabs) {
     }
 
     val lessConsumptionPosition = fuelConsumedMap.minOf { it.second }
-    println("Result part 1: $lessConsumptionPosition")
+    println("Result: $lessConsumptionPosition")
 }
 
 private fun parseCrabs(lines: List<String>): Crabs =
@@ -30,6 +30,10 @@ private fun parseCrabs(lines: List<String>): Crabs =
 
 private data class Crab(var position: Int)
 private data class Crabs(val crabs: List<Crab>) {
+    private val sequence = generateSequence(1) { it + 1 }
+
     fun getMaxPosition() = crabs.maxOf { it.position }
-    fun getFuelConsumedForPosition(positionDestination: Int): Int = crabs.sumOf { abs(it.position - positionDestination) }
+    fun getFuelConsumedForPosition(positionDestination: Int): Int = crabs.sumOf { crab ->
+        sequence.take(abs(crab.position - positionDestination)).sum()
+    }
 }
