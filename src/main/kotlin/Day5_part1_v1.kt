@@ -1,5 +1,6 @@
 package main.kotlin
 
+import main.kotlin.model.Point
 import java.io.File
 
 private const val COMMA = ","

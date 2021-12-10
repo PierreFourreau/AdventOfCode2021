@@ -1,5 +1,6 @@
 package main.kotlin
 
+import main.kotlin.model.Point
 import java.io.File
 
 private const val COMMA = ","
@@ -57,7 +58,6 @@ private fun parseCoordinates(lines: List<String>): List<Vent> {
 // Models
 
 data class Vent(val from: Point, val to: Point)
-data class Point(val x: Int, val y: Int)
 
 // Private extensions
 
