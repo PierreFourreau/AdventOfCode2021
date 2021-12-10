@@ -26,8 +26,8 @@ private fun sumOfDigits(line: String): Int {
     val splittedLine = line.split("|")
     val signalPatterns = splittedLine[0].trim().split(" ")
     val outputs = splittedLine[1].trim().split(" ")
-
     val signalPatternsBySize = mutableMapOf<Int, List<Char>>()
+
     signalPatterns.forEach {
         when (it.length) {
             2 -> signalPatternsBySize[1] = it.toList()
@@ -43,13 +43,13 @@ private fun sumOfDigits(line: String): Int {
             4 -> 4
             3 -> 7
             7 -> 8
-            else -> decodePattern(signalPatternsBySize, output)
+            else -> decodeComplexPattern(signalPatternsBySize, output)
         }
     }
     return outputValue.toInt()
 }
 
-private fun decodePattern(signalPatternsBySize: Map<Int, List<Char>>, output: String): String {
+private fun decodeComplexPattern(signalPatternsBySize: Map<Int, List<Char>>, output: String): String {
     val outputChars = output.toList()
     val onePattern = signalPatternsBySize[1] ?: throw IllegalStateException("Couldn't decode pattern $output")
     val fourPattern = signalPatternsBySize[4] ?: throw IllegalStateException("Couldn't decode pattern $output")
