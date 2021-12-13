@@ -1,5 +1,6 @@
 package main.kotlin
 
+import main.kotlin.model.Point
 import java.io.File
 
 fun main() {
@@ -28,26 +29,12 @@ private fun flash(octopusArray: Array<Array<Octopus>>, flashesCount: Int = 0): I
     octopusArray.mapIndexed { y, line ->
         line.mapIndexed { x, octopus ->
             if (octopus.energy > 9 && !octopus.isFlashed) {
-                // find adjacent and increase by 1
-                val top = octopusArray.getOrNull(y - 1)?.getOrNull(x)
-                val topLeft = octopusArray.getOrNull(y - 1)?.getOrNull(x - 1)
-                val topRight = octopusArray.getOrNull(y - 1)?.getOrNull(x + 1)
-                val bottom = octopusArray.getOrNull(y + 1)?.getOrNull(x)
-                val bottomLeft = octopusArray.getOrNull(y + 1)?.getOrNull(x - 1)
-                val bottomRight = octopusArray.getOrNull(y + 1)?.getOrNull(x + 1)
-                val left = line.getOrNull(x - 1)
-                val right = line.getOrNull(x + 1)
-
-                top?.let { octopusArray[y - 1][x] = top.increment() }
-                topLeft?.let { octopusArray[y - 1][x - 1] = topLeft.increment() }
-                topRight?.let { octopusArray[y - 1][x + 1] = topRight.increment() }
-                bottom?.let { octopusArray[y + 1][x] = bottom.increment() }
-                bottomLeft?.let { octopusArray[y + 1][x - 1] = bottomLeft.increment() }
-                bottomRight?.let { octopusArray[y + 1][x + 1] = bottomRight.increment() }
-                left?.let { octopusArray[y][x - 1] = left.increment() }
-                right?.let { octopusArray[y][x + 1] = right.increment() }
+                Pair(x, y).getAdjacentPoints().forEach { point ->
+                    octopusArray.getOrNull(point.y)?.getOrNull(point.x)?.let { octopus ->
+                        octopusArray[point.y][point.x] = octopus.increment()
+                    }
+                }
                 octopus.isFlashed = true
-
                 flash(
                     octopusArray = octopusArray,
                     flashesCount = flashesCount + 1
@@ -75,6 +62,17 @@ private fun Array<Array<Octopus>>.print(title: String) {
     }
     println("____________________________")
 }
+
+private fun Pair<Int, Int>.getAdjacentPoints() = listOf(
+    Point(first, second - 1),           // Top
+    Point(first - 1, second - 1),    // Top left
+    Point(first + 1, second - 1),    // Top right
+    Point(first, second + 1),           // Bottom
+    Point(first - 1, second + 1),    // Bottom left
+    Point(first + 1, second + 1),    // Bottom right
+    Point(first - 1, second),           // Left
+    Point(first + 1, second),           // Right
+)
 
 private data class Octopus(var energy: Int, var isFlashed: Boolean = false) {
     fun increment(): Octopus {
