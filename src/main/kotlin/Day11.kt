@@ -80,15 +80,3 @@ private data class Octopus(var energy: Int, var isFlashed: Boolean = false) {
 
     fun needToBeFlashed() = this.energy > 9 && !this.isFlashed
 }
-
-// For debug printing
-private fun Array<Array<Octopus>>.print(title: String) {
-    println(title)
-    this.forEach { line ->
-        line.forEach { octopus ->
-            print(octopus.energy)
-        }
-        println()
-    }
-    println("____________________________")
-}
